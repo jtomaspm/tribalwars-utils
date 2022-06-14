@@ -1,6 +1,6 @@
 
 export const createTest = () => {
-  return{
-    test: 'test'
-  }
+    return {
+        test: 'test'
+    }
 }

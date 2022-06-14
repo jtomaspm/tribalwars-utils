@@ -1,9 +1,9 @@
 import { TWdataFactory } from '../utils/TWdataFactory.js';
 
-export async function run_test () {
+export async function run_test() {
     const twdata = await TWdataFactory({
-        server : 'pt',
-        world : '85'
+        server: 'pt',
+        world: '85'
     })
 
     console.log(
