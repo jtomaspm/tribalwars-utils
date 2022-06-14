@@ -53,9 +53,23 @@ export async function fetch_basic_components(base_url : string): Promise<fetch_r
   }
 
   // allys
+  result.allys = await handle_ally(base_url);
+
+  // players
+  result.players = await handle_player(base_url);
+
+  // villages
+  result.villages = await handle_village(base_url);
+
+
+  return result
+}
+
+const handle_ally = async (base_url: string) : Promise<ally[]> => {
   let url = base_url+"ally.txt";
-  let txt = await (await fetch_api(url)).split('\n');
-    txt.forEach( line => {
+  let txt = (await fetch_api(url)).split('\n');
+  let result : ally[] = [];
+  txt.forEach( line => {
     let params = line.split(',');
     let ally : ally = {
       id : params[0],
@@ -66,28 +80,36 @@ export async function fetch_basic_components(base_url : string): Promise<fetch_r
       points : params[5],
       all_points : params[6] 
     }
-    result.allys.push(ally) 
+    result.push(ally) 
   })
+  return result
+}
 
-    // players
-    url = base_url+"player.txt";
-    txt = await (await fetch_api(url)).split('\n');
-    txt.forEach( line => {
-      let params = line.split(',');
-      let player : player = {
-        id : params[0],
-        name : decodeURIComponent(params[1]).replaceAll("+", " "),
-        tribe : params[2],
-        villages : params[3],
-        points : params[4],
-        rank : params[5]
-      }
-      result.players.push(player) 
-    })
 
-      // villages
-  url = base_url+"village.txt";
-  txt = await (await fetch_api(url)).split('\n');
+const handle_player = async (base_url: string) : Promise<player[]> => {
+  let url = base_url+"player.txt";
+  let txt = (await fetch_api(url)).split('\n');
+  let result : player[] = [];
+  txt.forEach( line => {
+    let params = line.split(',');
+    let player : player = {
+      id : params[0],
+      name : decodeURIComponent(params[1]).replaceAll("+", " "),
+      tribe : params[2],
+      villages : params[3],
+      points : params[4],
+      rank : params[5]
+    }
+    result.push(player) 
+  })
+  return result
+}
+
+
+const handle_village = async (base_url: string) : Promise<village[]> => {
+  let url = base_url+"village.txt";
+  let txt = (await fetch_api(url)).split('\n');
+  let result : village[] = [];
   txt.forEach( line => {
     let params = line.split(',');
     let village : village = {
@@ -99,8 +121,7 @@ export async function fetch_basic_components(base_url : string): Promise<fetch_r
       points : params[5],
       rank : params[6] 
     }
-    result.villages.push(village) 
+    result.push(village) 
   })
-
   return result
 }

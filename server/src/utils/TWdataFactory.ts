@@ -1,12 +1,12 @@
 import { fetch_result, fetch_basic_components } from "./fecth_api.js"
 
 
-type world_name = {
+export type world_name = {
     server : string;
     world : string;
 }
 
-type twdata = {
+export type twdata = {
     world : world_name;
     api_link : string;
     components : fetch_result;
@@ -25,4 +25,8 @@ export async function TWdataFactory (world: world_name) : Promise<twdata> {
         twdata.components = await fetch_basic_components(twdata.api_link)
     }
     return twdata
+}
+
+export const compareWorlds = (world1: world_name, world2: world_name) : Boolean => {
+    return world1.server == world2.server && world1.world == world2.world;  
 }
