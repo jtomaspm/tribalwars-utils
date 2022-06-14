@@ -37,3 +37,21 @@ export const getVillagesByPlayer = async (world: TWdataFactory.world_name, name:
 }
 
 
+export const getPlayersByAlly = async (world: TWdataFactory.world_name, tag: string): Promise<Promise<details.player_details>[]> => {
+    const twdata = await getTwData(world);
+    const allyId = twdata.components.allys.filter(ally => ally.tag == tag)[0].id
+    return twdata.components.players
+        .filter(
+            player => player.tribe == allyId
+        )
+        .map(
+            async (player) => {
+                const details: details.player_details = {
+                    name: player.name,
+                    ally_tag: tag,
+                    villages: await getVillagesByPlayer(world, player.name),
+                    points: parseInt(player.points)
+                };
+                return details;
+            })
+}

@@ -16,8 +16,8 @@ export type player_details = {
 
 export type ally_details = {
     name: string;
-    tage: string;
-    players: player_details[];
+    tag: string;
+    players: player_details[] | Promise<player_details>[];
     points: number;
     villages: village_details[];
 }
